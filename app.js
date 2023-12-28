@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 //routers
 app.use("/auth", authRouter);
-app.use("/login", registerRouter);
+app.use("/register", registerRouter);
 app.get("/", verifyToken, (req, res) => {
   res.status(200).send("Access garanted");
 });
