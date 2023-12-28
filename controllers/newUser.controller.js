@@ -18,7 +18,6 @@ async function registerNewUser(req, res) {
   const { username, password } = req.body;
   await verifyExistence();
   await addUserToDb(username, password, res);
-  res.status(201).send("User created");
 }
 
 export { registerNewUser };
