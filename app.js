@@ -3,8 +3,11 @@ import cors from "cors";
 import authRouter from "./routes/auth.routes.js";
 import registerRouter from "./routes/register.routes.js";
 import verifyToken from "./middlewares/verifyToken.js";
-const app = express();
+import dotenv from "dotenv";
+//loading environment variables
+dotenv.config();
 
+const app = express();
 //middlewares
 app.use(express.json());
 app.use(cors());
@@ -15,4 +18,4 @@ app.get("/", verifyToken, (req, res) => {
   res.status(200).send("Access garanted");
 });
 //port
-app.listen(8080, () => console.log("Server at 8080"));
+app.listen(8080, () => console.log("Server at", process.env._PORT));

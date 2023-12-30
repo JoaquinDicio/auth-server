@@ -1,19 +1,13 @@
-import {
-  DocumentReference,
-  doc,
-  getDoc,
-  getDocFromCache,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import getDb from "../utilities/connectDb.js";
+import { getUserByUsername } from "../utilities/getUserByUsername.js";
 const db = getDb();
 
 async function verifyExistence(username, res) {
   try {
     //tries to search for the username in db
-    const userRef = doc(db, "users", username);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
+    const user = await getUserByUsername(username);
+    if (user) {
       res.status(400).send("User already exists");
       return true;
     }
@@ -29,14 +23,13 @@ async function addUserToDb(username, password, res) {
     username: username,
     password: password,
   });
-  res.status(201).send("Usuario creado");
+  res.status(201).send("User created successfully");
 }
 
 async function registerNewUser(req, res) {
   const { username, password } = req.body;
   try {
     const existence = await verifyExistence(username, res);
-    console.log(existence);
     if (!existence) await addUserToDb(username, password, res);
   } catch (err) {
     console.log(err);
